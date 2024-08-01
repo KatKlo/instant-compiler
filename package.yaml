@@ -9,6 +9,10 @@ description:         Please see the README
 dependencies:
 - base >= 4.7 && < 5
 - array
+- containers
+- mtl
+- filepath
+- process
 
 ghc-options:
 - -Wall
@@ -22,11 +26,6 @@ ghc-options:
 
 library:
   source-dirs: src
-  exposed-modules:
-  - Lib.Utils
-  - Grammar.AbsInstant
-  - Grammar.LexInstant
-  - Grammar.ParInstant
   when:
     - condition: false
       other-modules:
