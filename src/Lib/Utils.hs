@@ -1,4 +1,7 @@
-module Lib.Utils ( someFunc ) where
+module Lib.Utils where
 
-someFunc :: IO ()
-someFunc = putStrLn "Hello World!"
+someFuncJvm :: IO ()
+someFuncJvm = putStrLn "Hello World from Jvm!"
+
+someFuncLlvm :: IO ()
+someFuncLlvm = putStrLn "Hello World from Llvm!"
