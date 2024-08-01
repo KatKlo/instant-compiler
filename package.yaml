@@ -13,6 +13,7 @@ dependencies:
 - mtl
 - filepath
 - process
+- dlist
 
 ghc-options:
 - -Wall

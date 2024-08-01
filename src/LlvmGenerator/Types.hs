@@ -3,6 +3,7 @@ module LlvmGenerator.Types where
 import Control.Monad.State
 import Control.Monad.Writer
 import qualified Data.Map as M
+import qualified Data.DList as DL
 import Grammar.AbsInstant
 
 data Ref
@@ -37,4 +38,4 @@ type Mem = M.Map Ident Ref
 
 type Store = ((Mem, Int), Int)
 
-type LlvmGenM a = WriterT [String] (StateT Store IO) a
+type LlvmGenM a = WriterT (DL.DList String) (StateT Store IO) a
