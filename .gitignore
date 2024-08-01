@@ -1,0 +1,8 @@
+.stack-work/
+*~
+.idea/
+out/
+stack.yaml
+stack.yaml.lock
+instant-compiler.cabal
+instant-compiler.iml
