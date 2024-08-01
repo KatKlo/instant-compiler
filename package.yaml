@@ -8,6 +8,7 @@ description:         Please see the README
 
 dependencies:
 - base >= 4.7 && < 5
+- array
 
 ghc-options:
 - -Wall
@@ -24,6 +25,9 @@ library:
   source-dirs: src
   exposed-modules:
   - Lib.Utils
+  - Grammar.AbsInstant
+  - Grammar.LexInstant
+  - Grammar.ParInstant
 
 executables:
   instant-compiler-exe:
