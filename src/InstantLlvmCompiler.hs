@@ -12,7 +12,7 @@ compileJvm fileName = do
   parseAndGenFile fileName newFileName generateLlvm
   let bcFileName = replaceExtension fileName ".bc"
   runHandle <- runCommand $ "llvm-as -o " ++ bcFileName ++ " " ++ newFileName
-  waitForProcess runHandle
+  _ <- waitForProcess runHandle
   return ()
 
 main :: IO ()

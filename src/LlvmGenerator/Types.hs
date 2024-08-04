@@ -1,30 +1,26 @@
 module LlvmGenerator.Types where
 
-import Control.Monad.State
-import Control.Monad.Writer
-import qualified Data.Map as M
-import qualified Data.DList as DL
-import Grammar.AbsInstant
-
-data Ref
+data Op
   = Addr String
   | Lit Integer
 
-data LlVMOp
-  = ALLOC Ref
-  | STORE Ref Ref
-  | LOAD Ref Ref
-  | ADD Ref Ref Ref
-  | SUB Ref Ref Ref
-  | MUL Ref Ref Ref
-  | DIV Ref Ref Ref
-  | PRINT Ref
+data LlvmInstr
+  = ALLOC Op
+  | STORE Op Op
+  | LOAD Op Op
+  | ADD Op Op Op
+  | SUB Op Op Op
+  | MUL Op Op Op
+  | DIV Op Op Op
+  | PRINT Op
+  
+type LlvmInstrConstructor = Op -> Op -> Op -> LlvmInstr
 
-instance Show Ref where
+instance Show Op where
   show (Addr s) = "%" ++ s
   show (Lit n) = show n
 
-instance Show LlVMOp where
+instance Show LlvmInstr where
   show (ALLOC var) = "  " ++ show var ++ " = alloca i32"
   show (STORE val var) = "  " ++ "store i32 " ++ show val ++ ", i32* " ++ show var
   show (LOAD addr var) = "  " ++ show addr ++ " = load i32, i32* " ++ show var
@@ -33,9 +29,3 @@ instance Show LlVMOp where
   show (MUL a b c) = "  " ++ show c ++ " = mul i32 " ++ show a ++ ", " ++ show b
   show (DIV a b c) = "  " ++ show c ++ " = sdiv i32 " ++ show a ++ ", " ++ show b
   show (PRINT a) = "  " ++ "call void @printInt(i32 " ++ show a ++ ")"
-
-type Mem = M.Map Ident Ref
-
-type Store = ((Mem, Int), Int)
-
-type LlvmGenM a = WriterT (DL.DList String) (StateT Store IO) a
