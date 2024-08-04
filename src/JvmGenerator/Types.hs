@@ -1,11 +1,6 @@
 module JvmGenerator.Types where
 
-import Control.Monad.State
-import qualified Data.Map as M
-import Grammar.AbsInstant
-import System.FilePath (takeBaseName)
-
-data JVMOp
+data JvmInstr
   = ICONST Integer
   | ISTORE Int
   | ILOAD Int
@@ -17,7 +12,7 @@ data JVMOp
   | GETSTATIC String String
   | INVOKEVIRTUAL String
 
-instance Show JVMOp where
+instance Show JvmInstr where
   show (ICONST n)
     | n <= 5 = "iconst_" ++ show n
     | n <= 127 = "bipush " ++ show n
@@ -36,11 +31,3 @@ instance Show JVMOp where
   show SWAP = "swap"
   show (GETSTATIC s1 s2) = "getstatic " ++ s1 ++ " " ++ s2
   show (INVOKEVIRTUAL s) = "invokevirtual " ++ " " ++ s
-
-type Loc = Int
-
-type Mem = M.Map Ident Loc
-
-type Store = (Mem, Loc)
-
-type JvmGenM a = StateT Store IO a

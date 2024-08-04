@@ -12,7 +12,7 @@ compileJvm fileName = do
   parseAndGenFile fileName newFileName (generateJvm fileName)
   let fileParent = takeDirectory fileName
   runHandle <- runCommand $ "java -jar lib/jasmin.jar -d " ++ fileParent ++ " " ++ newFileName
-  waitForProcess runHandle
+  _ <- waitForProcess runHandle
   return ()
 
 main :: IO ()
