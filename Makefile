@@ -2,7 +2,10 @@
 
 all :
 	make -C src
-	make clean
+	make cleanDist
 
 clean :
 	make clean -C src
+
+cleanDist :
+	make cleanDist -C src

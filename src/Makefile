@@ -16,5 +16,8 @@ $(JVM_COMPILER_NAME) : $(JVM_COMPILER_SOURCE)
 $(LLVM_COMPILER_NAME) : $(LLVM_COMPILER_SOURCE)
 	${GHC} $< -o ../$@
 
-clean :
+cleanDist :
 	find . \( -name '*.hi' -o -name '*.o' \) -type f -exec rm -f {} \;
+
+clean : cleanDist
+	rm -f ../$(JVM_COMPILER_NAME) ../$(LLVM_COMPILER_NAME)
