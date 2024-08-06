@@ -8,18 +8,18 @@ import JvmGenerator.Types
 import JvmGenerator.Monad
 import qualified Data.DList as DL
 
-generateJvm :: String -> Program -> IO [String]
+generateJvm :: String -> Program -> IO (DL.DList String)
 generateJvm filename prog = do
   (jvmInstructions, endState) <- runStateT (execWriterT (renderProgram prog)) emptyProgramState
   let locsNo = nextLoc endState
   let stackSize = maxStackSize endState
   let funBody = DL.map (("  " <>) . show) jvmInstructions
   let startOfFile = startJvmFile filename stackSize locsNo
-  return $ DL.toList (DL.concat [startOfFile, funBody, endJvmFile])
+  return $ DL.concat [startOfFile, funBody, endJvmFile]
 
 startJvmFile :: String -> Int -> Int -> DL.DList String
-startJvmFile filename stackSize locsNo = DL.fromList
-  [ ".source " ++ filename,
+startJvmFile filename stackSize locsNo = DL.fromList [
+    ".source " ++ filename,
     ".class public " ++ takeBaseName filename,
     ".super java/lang/Object",
     "",

@@ -7,10 +7,11 @@ import LlvmGenerator.Types
 import LlvmGenerator.Monad
 import qualified Data.DList as DL
 
-generateLlvm :: Program -> IO [String]
+generateLlvm :: Program -> IO (DL.DList String)
 generateLlvm prog = do
   llvmInstructions <- evalStateT (execWriterT (renderProgram prog)) emptyProgramState
-  return (DL.toList $ DL.concat [startLlvmFile, DL.map show llvmInstructions, endLlvmFile])
+  let funBody = DL.map (("  " <>) . show) llvmInstructions
+  return $ DL.concat [startLlvmFile, funBody, endLlvmFile]
 
 startLlvmFile :: DL.DList String
 startLlvmFile = DL.fromList [
@@ -37,10 +38,10 @@ renderStmt :: Stmt -> LlvmGenM ()
 renderStmt (SAss _ ident expr) = do
   valOp <- renderExpr expr
   varOp <- getVar ident
-  tell (DL.singleton $ STORE valOp varOp)
+  tell $ DL.singleton (STORE valOp varOp)
 renderStmt (SExp _ expr) = do
   valOp <- renderExpr expr
-  tell (DL.singleton $ PRINT valOp)
+  tell $ DL.singleton (PRINT valOp)
 
 renderExpr :: Exp -> LlvmGenM Op
 renderExpr (ExpAdd _ e1 e2) = renderExprUniversal e1 e2 ADD
@@ -51,7 +52,7 @@ renderExpr (ExpLit _ n) = return $ Lit n
 renderExpr (ExpVar _ name) = do
   varOp <- getVar name
   tmpOp <- getTmp
-  tell (DL.singleton $ LOAD tmpOp varOp)
+  tell $ DL.singleton (LOAD tmpOp varOp)
   return tmpOp
 
 renderExprUniversal :: Exp -> Exp -> LlvmInstrConstructor -> LlvmGenM Op
@@ -59,5 +60,5 @@ renderExprUniversal e1 e2 op = do
   valOp1 <- renderExpr e1
   valOp2 <- renderExpr e2
   tmpOp <- getTmp
-  tell (DL.singleton $ op valOp1 valOp2 tmpOp)
+  tell $ DL.singleton (op valOp1 valOp2 tmpOp)
   return tmpOp

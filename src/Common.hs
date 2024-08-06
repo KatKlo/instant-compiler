@@ -4,8 +4,9 @@ import Grammar.AbsInstant (Program)
 import Grammar.ParInstant (myLexer, pProgram)
 import System.Exit (exitFailure)
 import System.IO (hPrint, stderr)
+import qualified Data.DList as DL
 
-type GenFun = Program -> IO [String]
+type GenFun = Program -> IO (DL.DList String)
 
 parseAndGenFile :: FilePath -> FilePath -> GenFun -> IO ()
 parseAndGenFile inFileName outFileName genFun =
@@ -26,4 +27,4 @@ gen :: GenFun -> Program -> IO String
 gen fun prog = do
   progResult <- fun prog
   putStrLn "Generating successful!"
-  return . unlines $ progResult
+  return . unlines . DL.toList $ progResult

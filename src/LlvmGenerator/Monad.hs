@@ -25,7 +25,7 @@ insertNewVar var = do
   varNo <- gets varsNo
   let ref = Addr $ "var" ++ show varNo
   modify $ \st -> st {varsMap = M.insert var ref (varsMap st), varsNo = varNo + 1}
-  tell (DL.singleton $ ALLOC ref)
+  tell $ DL.singleton (ALLOC ref)
   pure ref
 
 getVar :: Ident -> LlvmGenM Op
@@ -39,4 +39,4 @@ getTmp :: LlvmGenM Op
 getTmp = do
   tmpNo <- gets tmpsNo
   modify $ \st -> st {tmpsNo = tmpNo + 1}
-  pure (Addr $ "tmp" ++ show tmpNo)
+  pure $ Addr ("tmp" ++ show tmpNo)

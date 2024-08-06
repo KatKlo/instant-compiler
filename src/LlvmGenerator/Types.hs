@@ -21,11 +21,11 @@ instance Show Op where
   show (Lit n) = show n
 
 instance Show LlvmInstr where
-  show (ALLOC var) = "  " ++ show var ++ " = alloca i32"
-  show (STORE val var) = "  " ++ "store i32 " ++ show val ++ ", i32* " ++ show var
-  show (LOAD addr var) = "  " ++ show addr ++ " = load i32, i32* " ++ show var
-  show (ADD a b c) = "  " ++ show c ++ " = add i32 " ++ show a ++ ", " ++ show b
-  show (SUB a b c) = "  " ++ show c ++ " = sub i32 " ++ show a ++ ", " ++ show b
-  show (MUL a b c) = "  " ++ show c ++ " = mul i32 " ++ show a ++ ", " ++ show b
-  show (DIV a b c) = "  " ++ show c ++ " = sdiv i32 " ++ show a ++ ", " ++ show b
-  show (PRINT a) = "  " ++ "call void @printInt(i32 " ++ show a ++ ")"
+  show (ALLOC var) = show var ++ " = alloca i32"
+  show (STORE val var) = "store i32 " ++ show val ++ ", i32* " ++ show var
+  show (LOAD addr var) = show addr ++ " = load i32, i32* " ++ show var
+  show (ADD a b c) = show c ++ " = add i32 " ++ show a ++ ", " ++ show b
+  show (SUB a b c) = show c ++ " = sub i32 " ++ show a ++ ", " ++ show b
+  show (MUL a b c) = show c ++ " = mul i32 " ++ show a ++ ", " ++ show b
+  show (DIV a b c) = show c ++ " = sdiv i32 " ++ show a ++ ", " ++ show b
+  show (PRINT a) = "call void @printInt(i32 " ++ show a ++ ")"
